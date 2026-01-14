@@ -5,8 +5,8 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-// import { requireUser } from "@/lib/auth/requireUser";
-// import { getRequiredUploads } from "@/lib/orders/templates";
+// import { requireUser } from "@/lib/auth";
+// import { getRequiredUploads } from "@/lib/orders";
 
 export async function POST(request: NextRequest) {
   try {

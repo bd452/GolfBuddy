@@ -4,8 +4,8 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-// import { requireCoach } from "@/lib/auth/requireAdmin";
-// import { sendDeliveryNotification } from "@/lib/email/send";
+// import { requireCoach } from "@/lib/auth";
+// import { sendDeliveryNotification } from "@/lib/email";
 
 export async function POST(
   request: NextRequest,

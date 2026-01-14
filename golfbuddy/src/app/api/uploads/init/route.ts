@@ -4,8 +4,8 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-// import { requireUser } from "@/lib/auth/requireUser";
-// import { validateUploadRequest } from "@/lib/uploads/init";
+// import { requireUser } from "@/lib/auth";
+// import { validateUploadRequest } from "@/lib/uploads";
 
 export async function POST(request: NextRequest) {
   try {

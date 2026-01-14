@@ -4,8 +4,8 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-// import { verifyWebhookSignature } from "@/lib/stripe/server";
-// import { sendPaymentConfirmation } from "@/lib/email/send";
+// import { verifyWebhookSignature } from "@/lib/stripe";
+// import { sendPaymentConfirmation } from "@/lib/email";
 
 export async function POST(request: NextRequest) {
   try {
