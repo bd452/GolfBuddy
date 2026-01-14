@@ -18,7 +18,7 @@ This document describes the recommended technical architecture to implement the 
 - **UI**: Tailwind CSS + shadcn/ui (optional, but a strong default)
 - **Database**: Firebase **Firestore**
 - **Auth**: Firebase **Authentication**
-- **File storage**: Firebase **Storage** (private objects; access via signed URLs or authenticated download)
+- **File storage**: Firebase **Storage** (private objects; access via authenticated download; signed URLs optional)
 - **Payments**: Stripe (Checkout + Webhooks)
 - **Scheduling (1:1 lessons)**: Calendly embed (MVP) with optional future in-app scheduling
 - **Email**: Resend (simple DX) for transactional mail (order confirmations, delivery emails)
@@ -118,7 +118,8 @@ These rules run server-side (Next.js Route Handlers / Server Actions + Firebase 
   - refunds (admin-only)
 - **Secure media policy**
   - canonical storage paths
-  - server-generated signed URLs for delivery (time-limited)
+  - delivery access (MVP): **dashboard-only** via authenticated download (no email media links)
+  - (optional) server-generated signed URLs for time-limited access (V2+ / special cases)
   - response visibility rules (only owning client, coach/admin)
 - **Communication triggers**
   - confirmation, reminder, and delivery emails
@@ -134,7 +135,7 @@ Platform-specific back-end areas (still under back-end):
 
 ## Native mobile app strategy (Expo + Firebase)
 
-Mobile apps (iOS/Android) should be first-class clients that use the same Firebase Auth/Firestore/Storage data model as web, while relying on the Next.js backend for privileged operations (Stripe, signed URLs, admin actions).
+Mobile apps (iOS/Android) should be first-class clients that use the same Firebase Auth/Firestore/Storage data model as web, while relying on the Next.js backend for privileged operations (Stripe, admin actions, optional signed URLs).
 
 ### What mobile talks to
 
@@ -144,7 +145,7 @@ Mobile apps (iOS/Android) should be first-class clients that use the same Fireba
   - Firebase Storage (upload client videos to allowed paths; download allowed media)
 - **To Next.js backend (server endpoints)**:
   - Stripe checkout session creation + webhook finalization
-  - signed URL generation for response video delivery (especially for email links)
+  - (optional) signed URL generation for response video access (V2+)
   - admin/coach operations (web-only UI, but server endpoints are shared)
   - (optional) push notification trigger endpoints
 
@@ -320,7 +321,7 @@ Use deterministic, permission-friendly paths:
 
 Do **not** expose raw bucket paths to the client UI; prefer:
 - authenticated download via Firebase SDK, or
-- server-generated **signed URLs** for time-limited access (ideal for delivery emails).
+- (optional) server-generated **signed URLs** for time-limited access (V2+).
 
 ## Security model
 
@@ -461,7 +462,7 @@ Prefer Google application default creds in Vercel, or store a service account JS
 
 - **Accounts**: require login for dashboard + uploads (**Email/Password**).
 - **Uploads**: use Firebase Storage with authenticated access; keep upload rules strict.
-- **Delivery**: store coach response in Storage and email a signed URL that expires (e.g., 7 days) plus keep access via dashboard.
+- **Delivery**: store coach response in Storage and require login to view it in the dashboard (no email media links in MVP).
 - **Scheduling**: embed Calendly and record only minimal booking metadata in Firestore (or none until v2).
 
 ## Future extensions (V2+)

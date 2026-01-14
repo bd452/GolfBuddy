@@ -183,7 +183,7 @@ The goal is to experience high quality golf coaching without needing to be at a 
   - Submitted → Waiting on videos → In review → Delivered
 - **Coach delivery**
   - Upload response video
-  - Client receives email with secure link
+  - Client receives email notification linking to dashboard (login required)
 - **Optional chat**
   - Simple messaging can be v1; can start with email (no in-app messaging)
 

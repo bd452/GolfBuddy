@@ -4,7 +4,7 @@
 - [ ] **Project foundation & repo scaffolding**
   - [ ] **Decide MVP scope knobs (document in repo)**
     - [x] Pick auth method: Email/Password
-    - [ ] Pick delivery access model: dashboard-only vs email signed URL + dashboard
+    - [x] Pick delivery access model: dashboard-only (login required for response content)
     - [ ] Pick scheduling model for live lessons: Calendly embed (MVP) vs internal bookings
     - [ ] Pick pricing model: single price vs Basic/Standard/Premium tiers
     - [ ] Define turnaround commitment (e.g., 48–72 hours) and when clock starts
