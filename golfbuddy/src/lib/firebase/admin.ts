@@ -1,37 +1,48 @@
 /**
- * Firebase Admin SDK initialization
- * Used in server-side code (Route Handlers, Server Actions)
+ * Firebase Admin SDK (server-only)
  *
- * Environment variables required:
- * - FIREBASE_ADMIN_PROJECT_ID
- * - FIREBASE_ADMIN_CLIENT_EMAIL
- * - FIREBASE_ADMIN_PRIVATE_KEY (handle newlines: replace \\n with \n)
+ * Usage:
+ *   import { adminAuth, adminDb, adminStorage } from "@/lib/firebase/admin";
  *
- * IMPORTANT: This module should be marked as server-only
+ * Requires env vars:
+ *   - FIREBASE_ADMIN_CLIENT_EMAIL
+ *   - FIREBASE_ADMIN_PRIVATE_KEY
  */
 
 import "server-only";
 
-// TODO: Install firebase-admin package: npm install firebase-admin
-// import { initializeApp, getApps, cert } from "firebase-admin/app";
-// import { getAuth } from "firebase-admin/auth";
-// import { getFirestore } from "firebase-admin/firestore";
-// import { getStorage } from "firebase-admin/storage";
+import { initializeApp, getApps, cert } from "firebase-admin/app";
+import { getAuth } from "firebase-admin/auth";
+import { getFirestore } from "firebase-admin/firestore";
+import { getStorage } from "firebase-admin/storage";
+import { firebaseConfig } from "@golfbuddy/firebase";
 
-const adminConfig = {
-  projectId: process.env.FIREBASE_ADMIN_PROJECT_ID,
-  clientEmail: process.env.FIREBASE_ADMIN_CLIENT_EMAIL,
-  // Replace escaped newlines with actual newlines
-  privateKey: process.env.FIREBASE_ADMIN_PRIVATE_KEY?.replace(/\\n/g, "\n"),
-};
+// Initialize Admin SDK
+if (getApps().length === 0) {
+  const clientEmail = process.env.FIREBASE_ADMIN_CLIENT_EMAIL;
+  const privateKey = process.env.FIREBASE_ADMIN_PRIVATE_KEY?.replace(
+    /\\n/g,
+    "\n"
+  );
 
-// Placeholder - uncomment when firebase-admin is installed
-// const app = getApps().length > 0
-//   ? getApps()[0]
-//   : initializeApp({ credential: cert(adminConfig) });
-//
-// export const adminAuth = getAuth(app);
-// export const adminDb = getFirestore(app);
-// export const adminStorage = getStorage(app);
+  if (!clientEmail || !privateKey) {
+    console.warn(
+      "Firebase Admin credentials not set. " +
+        "Set FIREBASE_ADMIN_CLIENT_EMAIL and FIREBASE_ADMIN_PRIVATE_KEY."
+    );
+  } else {
+    initializeApp({
+      credential: cert({
+        projectId: firebaseConfig.projectId,
+        clientEmail,
+        privateKey,
+      }),
+      storageBucket: firebaseConfig.storageBucket,
+    });
+  }
+}
 
-export { adminConfig };
+// Export services (will throw if not initialized - that's fine)
+export const adminAuth = getApps().length > 0 ? getAuth() : null;
+export const adminDb = getApps().length > 0 ? getFirestore() : null;
+export const adminStorage = getApps().length > 0 ? getStorage() : null;

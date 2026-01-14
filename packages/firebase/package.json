@@ -1,5 +1,5 @@
 {
-  "name": "@golfbuddy/shared",
+  "name": "@golfbuddy/firebase",
   "version": "0.1.0",
   "private": true,
   "main": "./dist/index.js",
@@ -9,7 +9,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "zod": "^3.23.8"
+    "firebase": "^11.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",

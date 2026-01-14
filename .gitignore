@@ -13,6 +13,9 @@ node_modules/
 !.yarn/sdks
 !.yarn/versions
 
+# Build output
+dist/
+
 # Next.js
 .next/
 out/

@@ -1,5 +1,4 @@
 /**
- * Firebase module barrel export
+ * Firebase - re-export from shared package
  */
-export { firebaseConfig } from "./client";
-// Note: admin exports are server-only and should be imported directly
+export { auth, db, storage, app, firebaseConfig } from "@golfbuddy/firebase";
