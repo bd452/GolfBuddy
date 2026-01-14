@@ -20,7 +20,7 @@ This document describes the recommended technical architecture to implement the 
 - **Auth**: Firebase **Authentication**
 - **File storage**: Firebase **Storage** (private objects; access via authenticated download; signed URLs optional)
 - **Payments**: Stripe (Checkout + Webhooks)
-- **Scheduling (1:1 lessons)**: Calendly embed (MVP) with optional future in-app scheduling
+- **Scheduling (1:1 lessons)**: Calendly (or similar) embed (MVP) with optional future in-app scheduling
 - **Email**: Resend (simple DX) for transactional mail (order confirmations, delivery emails)
 - **Hosting**: Vercel (simplest Next.js deploy); Firebase used for managed data/storage/auth
 
@@ -299,7 +299,7 @@ Represents a paid product: async analysis or live lesson booking.
 
 ### `bookings/{bookingId}` (optional in MVP)
 
-Only if you don’t want Calendly to be the system-of-record.
+Optional: store minimal booking metadata for a cohesive in-app experience (even if Calendly remains the system-of-record).
 
 - `bookingId`: string
 - `clientUid`: string
@@ -463,7 +463,7 @@ Prefer Google application default creds in Vercel, or store a service account JS
 - **Accounts**: require login for dashboard + uploads (**Email/Password**).
 - **Uploads**: use Firebase Storage with authenticated access; keep upload rules strict.
 - **Delivery**: store coach response in Storage and require login to view it in the dashboard (no email media links in MVP).
-- **Scheduling**: embed Calendly and record only minimal booking metadata in Firestore (or none until v2).
+- **Scheduling**: embed Calendly (or similar) and record minimal booking metadata in Firestore for cohesion.
 
 ## Future extensions (V2+)
 

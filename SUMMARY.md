@@ -189,7 +189,7 @@ The goal is to experience high quality golf coaching without needing to be at a 
 
 ### Scheduling (for 1:1 lessons)
 - Availability management
-- Booking page + confirmation email + calendar invite
+- Embedded Calendly (or similar) booking + confirmation email + calendar invite
 
 ---
 
