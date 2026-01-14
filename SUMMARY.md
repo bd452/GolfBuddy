@@ -144,7 +144,7 @@ The goal is to experience high quality golf coaching without needing to be at a 
 - **Legal**
   - Privacy policy, terms, refund policy, consent to share videos (optional)
 
-### Logged-in pages (MVP can be “email-driven” initially)
+### Logged-in pages (MVP: accounts required via Email/Password)
 - **Client dashboard**
   - Orders, status, upload links, delivered videos, invoices/receipts
 - **Upload portal**
@@ -185,7 +185,7 @@ The goal is to experience high quality golf coaching without needing to be at a 
   - Upload response video
   - Client receives email with secure link
 - **Optional chat**
-  - Simple messaging can be v1; can start with email-only
+  - Simple messaging can be v1; can start with email (no in-app messaging)
 
 ### Scheduling (for 1:1 lessons)
 - Availability management
@@ -264,7 +264,7 @@ The goal is to experience high quality golf coaching without needing to be at a 
 ### Web app
 - Frontend: Next.js (React) or similar
 - Backend: Node/Next API routes or a small API service
-- Auth (if needed for portal): hosted auth provider
+- Auth (MVP): Firebase Authentication (Email/Password)
 
 ### Video storage & delivery
 - Object storage for uploads (secure, expiring links)
@@ -299,6 +299,6 @@ The goal is to experience high quality golf coaching without needing to be at a 
 - Final pricing for asynchronous analysis and any tiers
 - Turnaround time commitment (e.g., 48 hours weekdays)
 - Refund policy specifics
-- Whether clients must create accounts or can be “email-only” initially
+- Auth method for MVP (decided): Email/Password
 - Whether to include a fixed follow-up window (e.g., 7 days Q&A)
 

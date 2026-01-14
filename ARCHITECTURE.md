@@ -34,7 +34,7 @@ This document describes the recommended technical architecture to implement the 
   - Coach/Admin area: Queue, Client detail, Delivery workflow
   - Backend endpoints (Route Handlers): intake creation, upload session creation, Stripe webhook handling, delivery notifications, admin actions
 - **Firebase**
-  - Auth: client sign-in (email link or password; pick one)
+  - Auth: client sign-in via **Email/Password** (MVP choice)
   - Firestore: users, intakes/orders, upload metadata, response video metadata, booking metadata
   - Storage: raw client uploads + coach response videos
 - **Stripe**
@@ -223,7 +223,7 @@ Notes:
 Create a Firebase project with:
 
 - **Authentication**
-  - Enable Email/Password (easiest) or Email Link (nice UX); Google optional.
+  - Enable **Email/Password** (MVP choice). (Optional later: Email Link, Google, etc.)
   - Store a user profile doc on first sign-in.
 - **Firestore**
   - Native mode
@@ -459,7 +459,7 @@ Prefer Google application default creds in Vercel, or store a service account JS
 
 ## Recommended MVP scope decisions (to reduce complexity)
 
-- **Accounts**: require login for dashboard + uploads (Email/Password easiest).
+- **Accounts**: require login for dashboard + uploads (**Email/Password**).
 - **Uploads**: use Firebase Storage with authenticated access; keep upload rules strict.
 - **Delivery**: store coach response in Storage and email a signed URL that expires (e.g., 7 days) plus keep access via dashboard.
 - **Scheduling**: embed Calendly and record only minimal booking metadata in Firestore (or none until v2).

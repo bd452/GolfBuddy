@@ -3,7 +3,7 @@
 
 - [ ] **Project foundation & repo scaffolding**
   - [ ] **Decide MVP scope knobs (document in repo)**
-    - [ ] Pick auth method: Email/Password vs Email Link
+    - [x] Pick auth method: Email/Password
     - [ ] Pick delivery access model: dashboard-only vs email signed URL + dashboard
     - [ ] Pick scheduling model for live lessons: Calendly embed (MVP) vs internal bookings
     - [ ] Pick pricing model: single price vs Basic/Standard/Premium tiers
