@@ -15,7 +15,11 @@ import { initializeApp, getApps, cert } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
 import { getStorage } from "firebase-admin/storage";
-import { firebaseConfig } from "@golfbuddy/firebase";
+
+import FIREBASE_CONFIG from "@golfbuddy/firebase/src/constants";
+// Config values needed for admin SDK (don't import from client package)
+const PROJECT_ID = FIREBASE_CONFIG.projectId;
+const STORAGE_BUCKET = FIREBASE_CONFIG.storageBucket;
 
 // Initialize Admin SDK
 if (getApps().length === 0) {
@@ -33,11 +37,11 @@ if (getApps().length === 0) {
   } else {
     initializeApp({
       credential: cert({
-        projectId: firebaseConfig.projectId,
+        projectId: PROJECT_ID,
         clientEmail,
         privateKey,
       }),
-      storageBucket: firebaseConfig.storageBucket,
+      storageBucket: STORAGE_BUCKET,
     });
   }
 }
