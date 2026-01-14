@@ -8,7 +8,7 @@ import type {
   SwingSubCategory,
   ShortGameSubCategory,
   RequiredUpload,
-} from "./types";
+} from "@golfbuddy/shared/types";
 
 /**
  * Generate required uploads for swing analysis

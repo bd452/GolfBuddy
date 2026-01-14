@@ -4,8 +4,8 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-// import { requireUser } from "@/lib/auth";
-// import { createCheckoutSession } from "@/lib/stripe";
+// import { requireUser } from "@/lib/auth/requireUser";
+// import { createCheckoutSession } from "@/lib/stripe/server";
 
 export async function POST(request: NextRequest) {
   try {

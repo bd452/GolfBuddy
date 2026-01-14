@@ -4,8 +4,8 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-// import { requireCoach } from "@/lib/auth";
-// import { validateTransition } from "@/lib/orders";
+// import { requireCoach } from "@/lib/auth/requireAdmin";
+// import { validateTransition } from "@/lib/orders/lifecycle";
 
 export async function POST(
   request: NextRequest,
