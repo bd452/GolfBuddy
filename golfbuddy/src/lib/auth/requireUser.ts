@@ -65,4 +65,3 @@ export async function requireUser(): Promise<AuthenticatedUser> {
 
   return user;
 }
-
