@@ -6,7 +6,7 @@
     - [x] Pick auth method: Email/Password
     - [x] Pick delivery access model: dashboard-only (login required for response content)
     - [x] Pick scheduling model for live lessons: embedded Calendly (or similar)
-    - [ ] Pick pricing model: single price vs Basic/Standard/Premium tiers
+    - [x] Pick pricing model: single price per service + multi-pack discounts
     - [ ] Define turnaround commitment (e.g., 48–72 hours) and when clock starts
   - [ ] **Initialize Next.js monorepo layout**
     - [ ] Create `app/` route groups: `(marketing)`, `(auth)`, `(client)`, `(admin)`

@@ -9,6 +9,7 @@ This document describes the recommended technical architecture to implement the 
 - **Firebase as system-of-record**: Auth + Firestore + Storage.
 - **Secure by default**: least-privilege access, private video storage, auditable admin actions.
 - **Production-ready**: clear env/config, webhook safety, deployments, and observability hooks.
+- **Simple pricing for MVP**: single-price services with optional multi-pack discounts (Stripe Prices).
 
 ## High-level stack (opinions / defaults)
 

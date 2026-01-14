@@ -20,7 +20,7 @@ Either I will respond to this and chat and ask for specific videos or will be an
 
 After sending videos and pay, I will respond with a video responding to the clients problems, maybe 5–10 minutes. The video will include me going over the clients golf swing in depth with solutions and drills to improve game. It will also include me showing exactly how to do the drills and how to fix their problems.
 
-Also offer one on one video lessons: **30 minute sessions** for a set price (maybe **$80**?).
+Also offer one on one video lessons: **30 minute sessions** for a set price (TBD).
 
 The goal is to experience high quality golf coaching without needing to be at a private club or pay expensive in-person lesson fees.
 
@@ -234,13 +234,13 @@ The goal is to experience high quality golf coaching without needing to be at a 
 ## Pricing & packaging (initial proposal)
 
 ### Asynchronous video analysis
-- Single price per category OR tiered packages:
-  - **Basic**: 1 issue focus + 1–2 drills
-  - **Standard**: 2–3 priorities + drills + practice plan
-  - **Premium**: includes follow-up Q&A window or second check-in
+- **Single price per async analysis** (MVP).
+- **Multi-pack discounts** (MVP):
+  - Example: **4 async analyses for the price of 3**
+  - (Optional) Other packs (e.g., 2-pack) if desired later
 
 ### Live 1:1
-- **30 minutes** at fixed price (e.g., **$80**)
+- **30 minutes** at fixed price (TBD)
 
 ---
 
@@ -296,7 +296,7 @@ The goal is to experience high quality golf coaching without needing to be at a 
 ---
 
 ## Open questions (to finalize during build)
-- Final pricing for asynchronous analysis and any tiers
+- Final pricing amounts for async analysis (single) + multi-pack(s) + live lesson
 - Turnaround time commitment (e.g., 48 hours weekdays)
 - Refund policy specifics
 - Auth method for MVP (decided): Email/Password
