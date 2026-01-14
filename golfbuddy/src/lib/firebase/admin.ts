@@ -16,7 +16,7 @@ import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
 import { getStorage } from "firebase-admin/storage";
 
-import FIREBASE_CONFIG from "@golfbuddy/firebase/src/constants";
+import FIREBASE_CONFIG from "@golfbuddy/firebase/constants";
 // Config values needed for admin SDK (don't import from client package)
 const PROJECT_ID = FIREBASE_CONFIG.projectId;
 const STORAGE_BUCKET = FIREBASE_CONFIG.storageBucket;
