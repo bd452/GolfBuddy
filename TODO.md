@@ -8,10 +8,10 @@
     - [x] Pick scheduling model for live lessons: embedded Calendly (or similar)
     - [x] Pick pricing model: single price per service + multi-pack discounts
     - [x] Define turnaround commitment: 48 hours from when all required videos are uploaded
-  - [ ] **Initialize Next.js monorepo layout**
-    - [ ] Create `app/` route groups: `(marketing)`, `(auth)`, `(client)`, `(admin)`
-    - [ ] Create `components/` shared UI components
-    - [ ] Create `lib/` domain modules (orders, uploads, authz, stripe, email)
+  - [x] **Initialize Next.js monorepo layout**
+    - [x] Create `app/` route groups: `(marketing)`, `(auth)`, `(client)`, `(admin)`
+    - [x] Create `components/` shared UI components
+    - [x] Create `lib/` domain modules (orders, uploads, authz, stripe, email)
     - [ ] (Optional) Create `packages/shared/` for shared types/schemas (Zod)
     - [ ] (Optional) Create `apps/mobile/` Expo app skeleton
   - [ ] **Baseline DX / quality**
