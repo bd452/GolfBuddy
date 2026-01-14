@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 /**
  * Firebase Admin SDK (server-only)
  *
  * Usage:
- *   import { adminAuth, adminDb, adminStorage } from "@/lib/firebase/admin";
+ *   import { getAdminAuth, getAdminDb, getAdminStorage } from "@/lib/firebase/admin";
+ *   const auth = getAdminAuth();
  *
  * Requires env vars:
  *   - FIREBASE_ADMIN_CLIENT_EMAIL
@@ -11,18 +13,27 @@
 
 import "server-only";
 
-import { initializeApp, getApps, cert } from "firebase-admin/app";
-import { getAuth } from "firebase-admin/auth";
-import { getFirestore } from "firebase-admin/firestore";
-import { getStorage } from "firebase-admin/storage";
+import type { App } from "firebase-admin/app";
+import type { Auth } from "firebase-admin/auth";
+import type { Firestore } from "firebase-admin/firestore";
+import type { Storage } from "firebase-admin/storage";
 
-import FIREBASE_CONFIG from "@golfbuddy/firebase/constants";
-// Config values needed for admin SDK (don't import from client package)
-const PROJECT_ID = FIREBASE_CONFIG.projectId;
-const STORAGE_BUCKET = FIREBASE_CONFIG.storageBucket;
+// Lazy initialization - nothing runs at module load time
+let app: App | null = null;
+let initialized = false;
 
-// Initialize Admin SDK
-if (getApps().length === 0) {
+function initializeAdmin(): App | null {
+  if (initialized) return app;
+  initialized = true;
+
+  // Dynamic imports to avoid top-level side effects
+  const { initializeApp, getApps, cert } = require("firebase-admin/app");
+
+  if (getApps().length > 0) {
+    app = getApps()[0];
+    return app;
+  }
+
   const clientEmail = process.env.FIREBASE_ADMIN_CLIENT_EMAIL;
   const privateKey = process.env.FIREBASE_ADMIN_PRIVATE_KEY?.replace(
     /\\n/g,
@@ -34,19 +45,50 @@ if (getApps().length === 0) {
       "Firebase Admin credentials not set. " +
         "Set FIREBASE_ADMIN_CLIENT_EMAIL and FIREBASE_ADMIN_PRIVATE_KEY."
     );
-  } else {
-    initializeApp({
-      credential: cert({
-        projectId: PROJECT_ID,
-        clientEmail,
-        privateKey,
-      }),
-      storageBucket: STORAGE_BUCKET,
-    });
+    return null;
   }
+
+  app = initializeApp({
+    credential: cert({
+      projectId:
+        process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "golfbuddy-1573d",
+      clientEmail,
+      privateKey,
+    }),
+    storageBucket:
+      process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET ||
+      "golfbuddy-1573d.firebasestorage.app",
+  });
+
+  return app;
 }
 
-// Export services (will throw if not initialized - that's fine)
-export const adminAuth = getApps().length > 0 ? getAuth() : null;
-export const adminDb = getApps().length > 0 ? getFirestore() : null;
-export const adminStorage = getApps().length > 0 ? getStorage() : null;
+/**
+ * Get Firebase Admin Auth instance (lazy initialized)
+ */
+export function getAdminAuth(): Auth | null {
+  const app = initializeAdmin();
+  if (!app) return null;
+  const { getAuth } = require("firebase-admin/auth");
+  return getAuth(app);
+}
+
+/**
+ * Get Firebase Admin Firestore instance (lazy initialized)
+ */
+export function getAdminDb(): Firestore | null {
+  const app = initializeAdmin();
+  if (!app) return null;
+  const { getFirestore } = require("firebase-admin/firestore");
+  return getFirestore(app);
+}
+
+/**
+ * Get Firebase Admin Storage instance (lazy initialized)
+ */
+export function getAdminStorage(): Storage | null {
+  const app = initializeAdmin();
+  if (!app) return null;
+  const { getStorage } = require("firebase-admin/storage");
+  return getStorage(app);
+}
