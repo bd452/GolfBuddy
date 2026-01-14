@@ -12,7 +12,9 @@ This document describes the recommended technical architecture to implement the 
 
 ## High-level stack (opinions / defaults)
 
-- **Web + backend**: Next.js (App Router) + TypeScript
+- **Web**: Next.js (App Router) + TypeScript
+- **Mobile (iOS/Android)**: React Native via Expo + TypeScript
+- **Backend**: Next.js Route Handlers / Server Actions (Node.js runtime) + Firebase Admin SDK
 - **UI**: Tailwind CSS + shadcn/ui (optional, but a strong default)
 - **Database**: Firebase **Firestore**
 - **Auth**: Firebase **Authentication**
@@ -130,6 +132,49 @@ Platform-specific back-end areas (still under back-end):
 - **[Mobile] Upload constraints policy**: max size/duration/content-type; allow/deny cellular uploads (policy) and enforce in upload-init endpoints.
 - **[Web] Admin/coach operational policy**: additional auditing requirements, “two-step delivery” workflows, internal-only notes retention.
 
+## Native mobile app strategy (Expo + Firebase)
+
+Mobile apps (iOS/Android) should be first-class clients that use the same Firebase Auth/Firestore/Storage data model as web, while relying on the Next.js backend for privileged operations (Stripe, signed URLs, admin actions).
+
+### What mobile talks to
+
+- **Direct to Firebase (client SDKs)**:
+  - Firebase Auth (sign in/out)
+  - Firestore (read/write client-owned docs, e.g., drafts; read order status)
+  - Firebase Storage (upload client videos to allowed paths; download allowed media)
+- **To Next.js backend (server endpoints)**:
+  - Stripe checkout session creation + webhook finalization
+  - signed URL generation for response video delivery (especially for email links)
+  - admin/coach operations (web-only UI, but server endpoints are shared)
+  - (optional) push notification trigger endpoints
+
+### Push notifications (recommended for mobile)
+
+- Use **Firebase Cloud Messaging (FCM)**.
+- Store device tokens in Firestore (e.g., `users/{uid}/devices/{deviceId}`) with server-side validation.
+- Send notifications from server-side code (Next.js backend using Firebase Admin SDK), triggered by lifecycle events (paid, delivered, lesson reminder).
+
+### Deep linking
+
+- Define canonical deep links that work across platforms:
+  - Web: `https://<app>/orders/{orderId}`
+  - Mobile: `golfbuddy://orders/{orderId}` (and/or universal links/app links)
+- Emails should include web links that can open the app when installed (universal links), but always work in browser.
+
+### Mobile payments (MVP options)
+
+Pick one and document it per release:
+
+- **Option A (simplest)**: open Stripe **Checkout** in an in-app browser, return via success/cancel URLs.
+- **Option B (best native UX)**: Stripe **PaymentSheet** in the mobile app + server-created PaymentIntents.
+
+Important: app store policies can require in-app purchases for some digital goods; confirm before launching paid mobile flows.
+
+### Mobile uploads (MVP guidance)
+
+- Use Firebase Storage uploads from the mobile app.
+- Implement a mobile upload queue (retry/pause/resume) for large videos; treat this as client UX, while server remains authoritative about allowed orders/keys/paths.
+
 ## Monorepo layout (single Next.js app)
 
 Recommended structure:
@@ -145,6 +190,7 @@ Recommended structure:
       stripe/webhook/route.ts
       orders/route.ts
       uploads/route.ts
+      notifications/route.ts # optional (FCM triggers)
   components/
   lib/
     firebase/
@@ -155,6 +201,13 @@ Recommended structure:
     auth/
       requireUser.ts
       requireAdmin.ts
+  apps/
+    mobile/                 # Expo React Native app (iOS/Android)
+      app/...
+      src/...
+  packages/
+    shared/                 # shared types/schemas (optional but recommended)
+      src/...
   firestore/
     rules/                  # security rules source (optional)
   scripts/                  # dev utilities (optional)
@@ -163,6 +216,7 @@ Recommended structure:
 Notes:
 - Use **server-only modules** for Firebase Admin SDK and Stripe secrets.
 - Keep all domain logic in `lib/` (thin routes, testable functions).
+ - Prefer shared, versioned schemas for domain data (e.g., Zod) in `packages/shared` so web/mobile stay consistent.
 
 ## Firebase project setup
 
