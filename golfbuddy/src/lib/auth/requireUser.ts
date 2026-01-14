@@ -6,7 +6,6 @@
  */
 
 import "server-only";
-import { cookies } from "next/headers";
 // import { adminAuth } from "@/lib/firebase/admin";
 
 /**
@@ -23,6 +22,8 @@ export interface AuthenticatedUser {
  */
 export async function getUser(): Promise<AuthenticatedUser | null> {
   try {
+    // Dynamic import to avoid issues during static page generation
+    const { cookies } = await import("next/headers");
     const cookieStore = await cookies();
     const sessionCookie = cookieStore.get("session");
 
