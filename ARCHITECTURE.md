@@ -49,6 +49,87 @@ This document describes the recommended technical architecture to implement the 
 6. Coach views admin **Queue**, reviews videos, records response video.
 7. Coach uploads response video; Order moves to `delivered`; user gets an email + dashboard update.
 
+## Responsibility & platform split (web / mobile / back-end)
+
+This project supports **Web (Next.js)** and **Native mobile (iOS/Android)** clients. The key rule:
+
+- **Back-end business logic is authoritative** (payments, access control, status transitions, private media access, cross-user/admin actions).
+- **Front-end business logic is UX-only** (form state, client-side convenience validation, upload progress orchestration). It must be safe if bypassed.
+
+Below is the explicit separation requested.
+
+### Web-only business logic (front-end, UX-only)
+
+- **Marketing/SEO orchestration**: landing page experiments, client-side analytics events, A/B UI decisions.
+- **Admin UI helpers**: client-side filtering/sorting of queue results, keyboard shortcuts, playback layout preferences.
+
+> Note: Coach/admin *decisions* that affect data (deliver, refund, status change) are **back-end logic** even if initiated from a web-only screen.
+
+### Web-only UI
+
+- Public marketing pages: Home/Services/Pricing/How-it-works/About/FAQ/Contact/Legal
+- Coach/Admin console screens (web-only): Queue, Client detail/review workspace, Delivery workflow UI, Admin settings UI
+
+### Hybrid business logic (front-end, UX-only; shared patterns across web + mobile)
+
+- **Intake form state**: guided steps, draft saving, inline validation messaging.
+- **Checklist rendering**: showing required uploads and completeness indicators (server is still source-of-truth).
+- **Order timeline presentation**: mapping `status` to human-friendly labels and “what happens next”.
+- **Playback UX rules**: default sorting/grouping of uploads, “mark watched” local state (if used).
+
+### Hybrid UI (client-facing; web + mobile)
+
+- Client auth screens (sign-in/up)
+- Client dashboard (orders list + statuses)
+- Order detail (intake summary, checklist, upload state, delivered response access)
+- Upload portal entry (guidance, checklist, progress UI)
+- Basic support/help surfaces (contact, FAQ subset)
+
+### Mobile-only business logic (front-end, UX-only)
+
+- **Guided capture workflow state machine**: step-by-step camera prompts that map captures to checklist items.
+- **Upload manager implementation**: background/resumable upload queueing, retries, “upload on Wi‑Fi” behavior (implementation detail; server still validates what’s allowed).
+- **Push notification client handling**: registering for notifications, routing taps to deep links, local notification preferences.
+
+### Mobile-only UI
+
+- In-app camera capture UX (framing tips, retake flow, per-clip labeling)
+- Upload manager screens (queued uploads, progress, retry/resume prompts)
+- Push-notification entry points (deep links into a specific order/response)
+
+### Back-end business logic (authoritative; platform-agnostic, with platform-specific sub-areas)
+
+These rules run server-side (Next.js Route Handlers / Server Actions + Firebase Admin) and apply regardless of client.
+
+- **AuthZ / entitlements**
+  - order ownership checks (`clientUid === requesterUid`)
+  - role checks (coach/admin)
+  - prevent client writes to sensitive fields (`status`, `stripe*`, delivery metadata)
+- **Order lifecycle**
+  - allowed status transitions and invariants
+  - “upload window” policy and states (`paid`/`awaiting_videos`)
+  - completeness computation: which required uploads are satisfied
+- **Payments (Stripe)**
+  - create checkout sessions
+  - verify webhooks
+  - finalize orders as `paid`, record Stripe IDs
+  - refunds (admin-only)
+- **Secure media policy**
+  - canonical storage paths
+  - server-generated signed URLs for delivery (time-limited)
+  - response visibility rules (only owning client, coach/admin)
+- **Communication triggers**
+  - confirmation, reminder, and delivery emails
+  - (optional) push notification send triggers
+- **Auditing**
+  - record who performed admin actions (deliver/refund/status changes)
+
+Platform-specific back-end areas (still under back-end):
+
+- **[Mobile] Push token registration validation**: ensure device tokens are bound to the authenticated user; revoke on sign-out.
+- **[Mobile] Upload constraints policy**: max size/duration/content-type; allow/deny cellular uploads (policy) and enforce in upload-init endpoints.
+- **[Web] Admin/coach operational policy**: additional auditing requirements, “two-step delivery” workflows, internal-only notes retention.
+
 ## Monorepo layout (single Next.js app)
 
 Recommended structure:
