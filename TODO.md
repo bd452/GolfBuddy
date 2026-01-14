@@ -1,0 +1,241 @@
+# TODO (GolfBuddy)
+> Checklist derived from `SUMMARY.md` (product plan) and `ARCHITECTURE.md` (recommended technical architecture).
+
+- [ ] **Project foundation & repo scaffolding**
+  - [ ] **Decide MVP scope knobs (document in repo)**
+    - [x] Pick auth method: Email/Password
+    - [x] Pick delivery access model: dashboard-only (login required for response content)
+    - [x] Pick scheduling model for live lessons: embedded Calendly (or similar)
+    - [x] Pick pricing model: single price per service + multi-pack discounts
+    - [x] Define turnaround commitment: 48 hours from when all required videos are uploaded
+  - [ ] **Initialize Next.js monorepo layout**
+    - [ ] Create `app/` route groups: `(marketing)`, `(auth)`, `(client)`, `(admin)`
+    - [ ] Create `components/` shared UI components
+    - [ ] Create `lib/` domain modules (orders, uploads, authz, stripe, email)
+    - [ ] (Optional) Create `packages/shared/` for shared types/schemas (Zod)
+    - [ ] (Optional) Create `apps/mobile/` Expo app skeleton
+  - [ ] **Baseline DX / quality**
+    - [ ] Configure TypeScript strictness and path aliases
+    - [ ] Add formatting and linting (ESLint/Prettier) and basic CI checks
+    - [ ] Add environment variable documentation and `.env.local.example`
+    - [ ] Add “server-only” boundaries for Firebase Admin + Stripe secrets
+
+- [ ] **Firebase project setup (system of record)**
+  - [ ] **Create Firebase project and enable core services**
+    - [ ] Enable Firebase Authentication provider (per MVP decision)
+    - [ ] Create Firestore (Native mode)
+    - [ ] Create Storage bucket (private)
+  - [ ] **Define Firestore data model**
+    - [ ] Create collection schema docs for:
+      - [ ] `users/{uid}`
+      - [ ] `orders/{orderId}`
+      - [ ] `orders/{orderId}/uploads/{uploadId}`
+      - [ ] `orders/{orderId}/responses/{responseId}`
+      - [ ] (Optional) `bookings/{bookingId}`
+    - [ ] Define `status` state machine and allowed transitions
+    - [ ] Define `requiredUploads` templates per coaching category/subcategory
+  - [ ] **Security rules (Firestore)**
+    - [ ] Draft rules that restrict clients to their own `orders` (`clientUid == request.auth.uid`)
+    - [ ] Prevent client writes to sensitive fields (`status`, `stripe*`, delivery metadata)
+    - [ ] Allow coach/admin read access to all orders and write to review/delivery fields
+    - [ ] Add indexes needed for admin queue filtering by `status` and timestamps
+  - [ ] **Security rules (Storage)**
+    - [ ] Establish canonical storage paths:
+      - [ ] `client-uploads/{clientUid}/{orderId}/{uploadId}.mp4`
+      - [ ] `coach-responses/{orderId}/{responseId}.mp4`
+    - [ ] Limit client uploads to their own path and upload-allowed order states
+    - [ ] Limit client reads of response videos to their own orders
+    - [ ] Ensure coach/admin can read all client uploads and write response videos
+  - [ ] **Local development tooling**
+    - [ ] Configure Firebase Emulator Suite (Auth/Firestore/Storage) for local dev
+    - [ ] Add scripts to start emulators and run app against them
+
+- [ ] **Auth & authorization (least privilege by default)**
+  - [ ] **Client auth (web)**
+    - [ ] Implement sign-in/up screens
+    - [ ] Create user profile doc on first sign-in (`users/{uid}`)
+    - [ ] Implement route protection for client pages (dashboard/orders/upload)
+  - [ ] **Roles (coach/admin)**
+    - [ ] Decide role mechanism: `users/{uid}.role` and/or custom claims
+    - [ ] Implement server-side role checks (`requireUser`, `requireAdmin/requireCoach`)
+    - [ ] Protect admin routes (`/admin/*`) and admin endpoints
+  - [ ] **Auditing**
+    - [ ] Log admin actions (deliver/refund/status change) with actor uid + timestamps
+
+- [ ] **Public marketing site (Milestone 1)**
+  - [ ] **Core pages**
+    - [ ] Home (`/`)
+    - [ ] Services (`/services`)
+    - [ ] Pricing (`/pricing`)
+    - [ ] How it works (`/how-it-works`)
+    - [ ] About (`/about`)
+    - [ ] FAQ (`/faq`)
+    - [ ] Contact (`/contact`)
+    - [ ] Legal pages (`/legal/*`): privacy, terms, refund policy, consent (if needed)
+  - [ ] **Content requirements**
+    - [ ] Add coach credibility section (bio, playing/coaching background)
+    - [ ] Add clear “how it works” funnel with category CTA
+    - [ ] Add expectations: turnaround time, what user uploads, what they receive
+    - [ ] Add privacy language for video storage + deletion requests
+  - [ ] **SEO / analytics hooks (MVP)**
+    - [ ] Add metadata, sitemap/robots as needed
+    - [ ] Track funnel events: visit → service select → checkout start → paid → delivered
+
+- [ ] **Intake, orders, and lifecycle (Milestone 2 core)**
+  - [ ] **Intake UX (client-facing)**
+    - [ ] Build category selection UI:
+      - [ ] Swing: off the tee / approach / both
+      - [ ] Short game: bunker / chipping / pitching
+      - [ ] Putting
+      - [ ] Optional: course management / tournament prep
+    - [ ] Add issue description input and optional goals (distance/accuracy/consistency/scoring)
+    - [ ] Add draft saving behavior (UX-only) and form validation
+  - [ ] **Order creation (server authoritative)**
+    - [ ] Implement `POST /api/orders`
+      - [ ] Validate inputs and authenticated user
+      - [ ] Create order doc with status `draft` or `awaiting_payment`
+      - [ ] Generate `requiredUploads` from category/subcategory
+      - [ ] Store timestamps (`createdAt`, `updatedAt`)
+  - [ ] **Order lifecycle enforcement**
+    - [ ] Define allowed transitions (e.g., `awaiting_payment` → `paid` → `awaiting_videos` → `in_review` → `delivered`)
+    - [ ] Implement server-side transition helper enforcing invariants
+    - [ ] Compute “upload completeness” against `requiredUploads`
+
+- [ ] **Payments (Stripe Checkout + webhooks)**
+  - [ ] **Stripe configuration**
+    - [ ] Create Stripe products/prices (async analysis tiers, live lesson)
+    - [ ] Configure env vars: `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, publishable key
+  - [ ] **Checkout flow**
+    - [ ] Implement `POST /api/stripe/checkout`
+      - [ ] Validate order ownership and status
+      - [ ] Create Checkout session with success/cancel URLs
+      - [ ] Persist `stripeCheckoutSessionId` / related IDs to order
+  - [ ] **Webhook handling (authoritative state updates)**
+    - [ ] Implement `POST /api/stripe/webhook`
+      - [ ] Verify signature
+      - [ ] On completion/success events:
+        - [ ] Mark order `paid`
+        - [ ] Set upload-allowed state (typically `awaiting_videos`)
+        - [ ] Record Stripe IDs and amounts
+        - [ ] Trigger confirmation email (“what happens next” timeline)
+  - [ ] **Refunds (admin-only)**
+    - [ ] Add admin endpoint to initiate refund and update order status (`refunded`)
+    - [ ] Audit refund actions and notify client appropriately
+
+- [ ] **Uploads (client videos)**
+  - [ ] **Upload portal UI**
+    - [ ] Show required checklist derived from `requiredUploads`
+    - [ ] Provide filming instructions per category (angles/distances)
+    - [ ] Implement multi-file upload with progress UI
+    - [ ] Add basic validation / confirmations (angle/distance labeling)
+  - [ ] **Secure upload initialization (server)**
+    - [ ] Implement `POST /api/uploads/init`
+      - [ ] Validate order ownership + status allows uploads
+      - [ ] Return allowed upload keys and canonical storage paths
+      - [ ] Enforce constraints policy (content-type, size, duration where possible)
+  - [ ] **Storage writes & metadata**
+    - [ ] Upload to `client-uploads/{clientUid}/{orderId}/{uploadId}.mp4`
+    - [ ] Write `orders/{orderId}/uploads/{uploadId}` metadata (prefer server-validated)
+    - [ ] Update order status when uploads complete (e.g., to `in_review`), if desired
+
+- [ ] **Coach/admin console (Milestone 3 core)**
+  - [ ] **Queue**
+    - [ ] Build `/admin/queue` to list/filter orders by status (awaiting videos, in review, delivered)
+    - [ ] Add quick links into order detail pages
+  - [ ] **Order review workspace**
+    - [ ] Build `/admin/orders/[orderId]`
+      - [ ] Show intake summary and client notes/goals
+      - [ ] Show uploaded videos with playback
+      - [ ] Add internal notes (retention policy TBD)
+      - [ ] Allow status transitions via server endpoint (authorized)
+  - [ ] **Delivery workflow**
+    - [ ] Implement response upload to `coach-responses/{orderId}/{responseId}.mp4`
+    - [ ] Record `responses` metadata (`createdByUid`, timestamps, duration if available)
+    - [ ] Implement `POST /api/admin/orders/{orderId}/deliver`
+      - [ ] Authorize coach/admin
+      - [ ] Move order to `delivered`, set `deliveredAt`
+      - [ ] Trigger delivery email to client
+    - [ ] Implement optional “two-step delivery” (draft → confirm send), if needed
+
+- [ ] **Client portal (dashboard + order detail)**
+  - [ ] **Dashboard**
+    - [ ] Build `/dashboard` orders list with human-friendly status mapping
+    - [ ] Provide links to order detail and upload portal
+  - [ ] **Order detail**
+    - [ ] Build `/orders/[orderId]`
+      - [ ] Show intake summary
+      - [ ] Show checklist + upload completeness indicators
+      - [ ] Show delivered response video access (secure)
+  - [ ] **Secure response access**
+    - [ ] Implement signed URL generation (server) for response videos
+    - [ ] Ensure only owning client (and coach/admin) can access response links
+    - [ ] Decide signed URL expiry (e.g., 7 days) and refresh strategy for dashboard
+
+- [ ] **Email communications (Resend)**
+  - [ ] **Email provider setup**
+    - [ ] Configure `RESEND_API_KEY` and `EMAIL_FROM`
+    - [ ] Create basic email templates (HTML + text)
+  - [ ] **Transactional emails**
+    - [ ] Payment confirmation email with “what happens next”
+    - [ ] Delivery email with secure response link
+    - [ ] Optional reminders (awaiting videos / booking reminder)
+  - [ ] **Unsubscribe / preferences (future)**
+    - [ ] Add preference storage (optional) and suppression list handling
+
+- [ ] **Scheduling for live 1:1 lessons (Milestone 4)**
+  - [ ] **Calendly (MVP)**
+    - [ ] Embed Calendly booking flow
+    - [ ] Ensure payment happens at correct stage (before/after booking) per chosen UX
+    - [ ] Send confirmation email + prep instructions
+  - [ ] **Optional internal bookings**
+    - [ ] Implement `bookings/{bookingId}` model if Calendly is not system-of-record
+    - [ ] Store meeting URL and times, and display in client dashboard
+    - [ ] Generate calendar invites (ICS) from server
+
+- [ ] **Mobile app (Expo) (optional MVP / v2)**
+  - [ ] **Expo client scaffolding**
+    - [ ] Set up Firebase Auth integration (mobile)
+    - [ ] Implement deep linking (`golfbuddy://orders/{orderId}`) and universal links
+  - [ ] **Mobile capture & uploads**
+    - [ ] Build guided capture workflow state machine (per category checklist)
+    - [ ] Implement background/resumable upload queue with retries
+    - [ ] Implement “upload on Wi‑Fi only” behavior (client UX) and enforce server policy
+  - [ ] **Push notifications (recommended for mobile)**
+    - [ ] Add FCM token registration with server-side validation
+    - [ ] Store tokens in Firestore (`users/{uid}/devices/{deviceId}`)
+    - [ ] Trigger notifications on lifecycle events (paid, delivered, booking reminders)
+
+- [ ] **Observability, ops, and deployment**
+  - [ ] **Environment & config**
+    - [ ] Document required env vars (Firebase client, Firebase Admin, Stripe, Resend, app URL)
+    - [ ] Ensure `FIREBASE_ADMIN_PRIVATE_KEY` newline handling is correct
+  - [ ] **Deployment (Vercel)**
+    - [ ] Set up Vercel project and environment variables
+    - [ ] Configure Stripe webhook endpoint URL
+    - [ ] Validate production Firebase rules and indexes deployment process
+  - [ ] **Logging & monitoring**
+    - [ ] Add structured server logs around webhooks, uploads init, delivery actions
+    - [ ] Add basic error reporting hooks (Sentry later)
+
+- [ ] **Policies & legal**
+  - [ ] **Privacy & consent**
+    - [ ] Finalize privacy policy language for storing client videos
+    - [ ] Define deletion request process and retention expectations
+    - [ ] Add explicit consent to share videos if testimonials/sample clips are used
+  - [ ] **Refunds and service terms**
+    - [ ] Finalize refund policy and surface it on Pricing/FAQ/Legal
+    - [ ] Define service limitations / coaching disclaimers
+
+- [ ] **Backlog / V2+ enhancements**
+  - [ ] **In-app messaging**
+    - [ ] Add thread-per-order messaging model and UI surfaces
+  - [ ] **Better upload validation**
+    - [ ] Guided capture improvements (angle confirmation, checklist enforcement)
+    - [ ] Automated upload validation (duration/size/content-type hardening)
+  - [ ] **Practice plans & progress tracking**
+    - [ ] Template library for drills/practice plans
+    - [ ] Progress tracking and check-ins
+  - [ ] **Subscriptions / memberships**
+    - [ ] Tiered access, recurring billing, entitlement management
+  - [ ] **Admin analytics dashboard**
+    - [ ] Funnel + operational metrics (time-to-deliver, conversion rates)

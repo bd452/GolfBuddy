@@ -20,7 +20,7 @@ Either I will respond to this and chat and ask for specific videos or will be an
 
 After sending videos and pay, I will respond with a video responding to the clients problems, maybe 5–10 minutes. The video will include me going over the clients golf swing in depth with solutions and drills to improve game. It will also include me showing exactly how to do the drills and how to fix their problems.
 
-Also offer one on one video lessons: **30 minute sessions** for a set price (maybe **$80**?).
+Also offer one on one video lessons: **30 minute sessions** for a set price (TBD).
 
 The goal is to experience high quality golf coaching without needing to be at a private club or pay expensive in-person lesson fees.
 
@@ -144,7 +144,7 @@ The goal is to experience high quality golf coaching without needing to be at a 
 - **Legal**
   - Privacy policy, terms, refund policy, consent to share videos (optional)
 
-### Logged-in pages (MVP can be “email-driven” initially)
+### Logged-in pages (MVP: accounts required via Email/Password)
 - **Client dashboard**
   - Orders, status, upload links, delivered videos, invoices/receipts
 - **Upload portal**
@@ -183,13 +183,13 @@ The goal is to experience high quality golf coaching without needing to be at a 
   - Submitted → Waiting on videos → In review → Delivered
 - **Coach delivery**
   - Upload response video
-  - Client receives email with secure link
+  - Client receives email notification linking to dashboard (login required)
 - **Optional chat**
-  - Simple messaging can be v1; can start with email-only
+  - Simple messaging can be v1; can start with email (no in-app messaging)
 
 ### Scheduling (for 1:1 lessons)
 - Availability management
-- Booking page + confirmation email + calendar invite
+- Embedded Calendly (or similar) booking + confirmation email + calendar invite
 
 ---
 
@@ -205,7 +205,7 @@ The goal is to experience high quality golf coaching without needing to be at a 
 - Ability for client to request deletion
 
 ### Turnaround time
-- Display expected delivery time (e.g., “within 48–72 hours”) and set expectations
+- Display expected delivery time: **within 48 hours from when all required videos are uploaded**
 
 ### Accessibility
 - Readable typography, high-contrast UI, keyboard navigation for forms
@@ -234,13 +234,13 @@ The goal is to experience high quality golf coaching without needing to be at a 
 ## Pricing & packaging (initial proposal)
 
 ### Asynchronous video analysis
-- Single price per category OR tiered packages:
-  - **Basic**: 1 issue focus + 1–2 drills
-  - **Standard**: 2–3 priorities + drills + practice plan
-  - **Premium**: includes follow-up Q&A window or second check-in
+- **Single price per async analysis** (MVP).
+- **Multi-pack discounts** (MVP):
+  - Example: **4 async analyses for the price of 3**
+  - (Optional) Other packs (e.g., 2-pack) if desired later
 
 ### Live 1:1
-- **30 minutes** at fixed price (e.g., **$80**)
+- **30 minutes** at fixed price (TBD)
 
 ---
 
@@ -264,7 +264,7 @@ The goal is to experience high quality golf coaching without needing to be at a 
 ### Web app
 - Frontend: Next.js (React) or similar
 - Backend: Node/Next API routes or a small API service
-- Auth (if needed for portal): hosted auth provider
+- Auth (MVP): Firebase Authentication (Email/Password)
 
 ### Video storage & delivery
 - Object storage for uploads (secure, expiring links)
@@ -296,9 +296,9 @@ The goal is to experience high quality golf coaching without needing to be at a 
 ---
 
 ## Open questions (to finalize during build)
-- Final pricing for asynchronous analysis and any tiers
-- Turnaround time commitment (e.g., 48 hours weekdays)
+- Final pricing amounts for async analysis (single) + multi-pack(s) + live lesson
+- Turnaround commitment (decided): **48 hours from when all required videos are uploaded**
 - Refund policy specifics
-- Whether clients must create accounts or can be “email-only” initially
+- Auth method for MVP (decided): Email/Password
 - Whether to include a fixed follow-up window (e.g., 7 days Q&A)
 

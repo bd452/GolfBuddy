@@ -9,6 +9,7 @@ This document describes the recommended technical architecture to implement the 
 - **Firebase as system-of-record**: Auth + Firestore + Storage.
 - **Secure by default**: least-privilege access, private video storage, auditable admin actions.
 - **Production-ready**: clear env/config, webhook safety, deployments, and observability hooks.
+- **Simple pricing for MVP**: single-price services with optional multi-pack discounts (Stripe Prices).
 
 ## High-level stack (opinions / defaults)
 
@@ -18,9 +19,9 @@ This document describes the recommended technical architecture to implement the 
 - **UI**: Tailwind CSS + shadcn/ui (optional, but a strong default)
 - **Database**: Firebase **Firestore**
 - **Auth**: Firebase **Authentication**
-- **File storage**: Firebase **Storage** (private objects; access via signed URLs or authenticated download)
+- **File storage**: Firebase **Storage** (private objects; access via authenticated download; signed URLs optional)
 - **Payments**: Stripe (Checkout + Webhooks)
-- **Scheduling (1:1 lessons)**: Calendly embed (MVP) with optional future in-app scheduling
+- **Scheduling (1:1 lessons)**: Calendly (or similar) embed (MVP) with optional future in-app scheduling
 - **Email**: Resend (simple DX) for transactional mail (order confirmations, delivery emails)
 - **Hosting**: Vercel (simplest Next.js deploy); Firebase used for managed data/storage/auth
 
@@ -34,7 +35,7 @@ This document describes the recommended technical architecture to implement the 
   - Coach/Admin area: Queue, Client detail, Delivery workflow
   - Backend endpoints (Route Handlers): intake creation, upload session creation, Stripe webhook handling, delivery notifications, admin actions
 - **Firebase**
-  - Auth: client sign-in (email link or password; pick one)
+  - Auth: client sign-in via **Email/Password** (MVP choice)
   - Firestore: users, intakes/orders, upload metadata, response video metadata, booking metadata
   - Storage: raw client uploads + coach response videos
 - **Stripe**
@@ -118,7 +119,8 @@ These rules run server-side (Next.js Route Handlers / Server Actions + Firebase 
   - refunds (admin-only)
 - **Secure media policy**
   - canonical storage paths
-  - server-generated signed URLs for delivery (time-limited)
+  - delivery access (MVP): **dashboard-only** via authenticated download (no email media links)
+  - (optional) server-generated signed URLs for time-limited access (V2+ / special cases)
   - response visibility rules (only owning client, coach/admin)
 - **Communication triggers**
   - confirmation, reminder, and delivery emails
@@ -134,7 +136,7 @@ Platform-specific back-end areas (still under back-end):
 
 ## Native mobile app strategy (Expo + Firebase)
 
-Mobile apps (iOS/Android) should be first-class clients that use the same Firebase Auth/Firestore/Storage data model as web, while relying on the Next.js backend for privileged operations (Stripe, signed URLs, admin actions).
+Mobile apps (iOS/Android) should be first-class clients that use the same Firebase Auth/Firestore/Storage data model as web, while relying on the Next.js backend for privileged operations (Stripe, admin actions, optional signed URLs).
 
 ### What mobile talks to
 
@@ -144,7 +146,7 @@ Mobile apps (iOS/Android) should be first-class clients that use the same Fireba
   - Firebase Storage (upload client videos to allowed paths; download allowed media)
 - **To Next.js backend (server endpoints)**:
   - Stripe checkout session creation + webhook finalization
-  - signed URL generation for response video delivery (especially for email links)
+  - (optional) signed URL generation for response video access (V2+)
   - admin/coach operations (web-only UI, but server endpoints are shared)
   - (optional) push notification trigger endpoints
 
@@ -223,7 +225,7 @@ Notes:
 Create a Firebase project with:
 
 - **Authentication**
-  - Enable Email/Password (easiest) or Email Link (nice UX); Google optional.
+  - Enable **Email/Password** (MVP choice). (Optional later: Email Link, Google, etc.)
   - Store a user profile doc on first sign-in.
 - **Firestore**
   - Native mode
@@ -298,7 +300,7 @@ Represents a paid product: async analysis or live lesson booking.
 
 ### `bookings/{bookingId}` (optional in MVP)
 
-Only if you don’t want Calendly to be the system-of-record.
+Optional: store minimal booking metadata for a cohesive in-app experience (even if Calendly remains the system-of-record).
 
 - `bookingId`: string
 - `clientUid`: string
@@ -320,7 +322,7 @@ Use deterministic, permission-friendly paths:
 
 Do **not** expose raw bucket paths to the client UI; prefer:
 - authenticated download via Firebase SDK, or
-- server-generated **signed URLs** for time-limited access (ideal for delivery emails).
+- (optional) server-generated **signed URLs** for time-limited access (V2+).
 
 ## Security model
 
@@ -459,10 +461,11 @@ Prefer Google application default creds in Vercel, or store a service account JS
 
 ## Recommended MVP scope decisions (to reduce complexity)
 
-- **Accounts**: require login for dashboard + uploads (Email/Password easiest).
+- **Accounts**: require login for dashboard + uploads (**Email/Password**).
 - **Uploads**: use Firebase Storage with authenticated access; keep upload rules strict.
-- **Delivery**: store coach response in Storage and email a signed URL that expires (e.g., 7 days) plus keep access via dashboard.
-- **Scheduling**: embed Calendly and record only minimal booking metadata in Firestore (or none until v2).
+- **Delivery**: store coach response in Storage and require login to view it in the dashboard (no email media links in MVP).
+- **Scheduling**: embed Calendly (or similar) and record minimal booking metadata in Firestore for cohesion.
+- **Turnaround**: commit to delivery **within 48 hours of all required videos being uploaded** (set expectations in UI + emails).
 
 ## Future extensions (V2+)
 
