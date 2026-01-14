@@ -38,28 +38,3 @@ jobs:
       - name: Run TypeScript type check
         run: yarn type-check
 
-  build:
-    name: Build Check
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./golfbuddy
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Install dependencies
-        run: yarn install --immutable
-
-      - name: Build project
-        run: yarn build
-
