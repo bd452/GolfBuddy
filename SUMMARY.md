@@ -205,7 +205,7 @@ The goal is to experience high quality golf coaching without needing to be at a 
 - Ability for client to request deletion
 
 ### Turnaround time
-- Display expected delivery time (e.g., “within 48–72 hours”) and set expectations
+- Display expected delivery time: **within 48 hours from when all required videos are uploaded**
 
 ### Accessibility
 - Readable typography, high-contrast UI, keyboard navigation for forms
@@ -297,7 +297,7 @@ The goal is to experience high quality golf coaching without needing to be at a 
 
 ## Open questions (to finalize during build)
 - Final pricing amounts for async analysis (single) + multi-pack(s) + live lesson
-- Turnaround time commitment (e.g., 48 hours weekdays)
+- Turnaround commitment (decided): **48 hours from when all required videos are uploaded**
 - Refund policy specifics
 - Auth method for MVP (decided): Email/Password
 - Whether to include a fixed follow-up window (e.g., 7 days Q&A)

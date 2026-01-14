@@ -465,6 +465,7 @@ Prefer Google application default creds in Vercel, or store a service account JS
 - **Uploads**: use Firebase Storage with authenticated access; keep upload rules strict.
 - **Delivery**: store coach response in Storage and require login to view it in the dashboard (no email media links in MVP).
 - **Scheduling**: embed Calendly (or similar) and record minimal booking metadata in Firestore for cohesion.
+- **Turnaround**: commit to delivery **within 48 hours of all required videos being uploaded** (set expectations in UI + emails).
 
 ## Future extensions (V2+)
 
