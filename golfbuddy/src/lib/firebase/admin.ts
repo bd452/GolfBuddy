@@ -16,10 +16,9 @@ import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
 import { getStorage } from "firebase-admin/storage";
 
-import FIREBASE_CONFIG from "@golfbuddy/firebase/constants";
-// Config values needed for admin SDK (don't import from client package)
-const PROJECT_ID = FIREBASE_CONFIG.projectId;
-const STORAGE_BUCKET = FIREBASE_CONFIG.storageBucket;
+// Inlined to avoid potential package resolution issues
+const PROJECT_ID = "golfbuddy-1573d";
+const STORAGE_BUCKET = "golfbuddy-1573d.firebasestorage.app";
 
 // Initialize Admin SDK
 if (getApps().length === 0) {
