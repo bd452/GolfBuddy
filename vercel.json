@@ -1,0 +1,3 @@
+{
+  "buildCommand": "rm -rf golfbuddy/.next && yarn workspace @golfbuddy/shared build && yarn workspace @golfbuddy/firebase build && yarn workspace golfbuddy build"
+}

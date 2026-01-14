@@ -1,15 +1,15 @@
 {
-  "name": "@golfbuddy/shared",
+  "name": "@golfbuddy/firebase",
   "version": "0.1.0",
   "private": true,
   "exports": {
-    "./types": {
-      "types": "./dist/types.d.ts",
-      "default": "./dist/types.js"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
     },
-    "./schemas": {
-      "types": "./dist/schemas.d.ts",
-      "default": "./dist/schemas.js"
+    "./constants": {
+      "types": "./dist/constants.d.ts",
+      "default": "./dist/constants.js"
     }
   },
   "scripts": {
@@ -17,7 +17,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "zod": "^3.23.8"
+    "firebase": "^11.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",

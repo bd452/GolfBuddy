@@ -4,7 +4,7 @@
  */
 
 import "server-only";
-import type { OrderStatus } from "./types";
+import type { OrderStatus } from "@golfbuddy/shared/types";
 
 /**
  * Allowed status transitions

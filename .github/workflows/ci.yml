@@ -10,33 +10,32 @@ jobs:
   lint-and-format:
     name: Lint and Format Check
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./golfbuddy
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Enable Corepack
+        run: corepack enable
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: "yarn"
-          cache-dependency-path: golfbuddy/yarn.lock
-
-      - name: Enable Corepack
-        run: corepack enable
+          cache-dependency-path: yarn.lock
 
       - name: Install dependencies
         run: yarn install --immutable
 
+      - name: Build workspace packages
+        run: yarn workspace @golfbuddy/shared build && yarn workspace @golfbuddy/firebase build
+
       - name: Run ESLint
-        run: yarn lint
+        run: yarn workspace golfbuddy lint
 
       - name: Check Prettier formatting
-        run: yarn format:check
+        run: yarn workspace golfbuddy format:check
 
       - name: Run TypeScript type check
-        run: yarn type-check
-
+        run: yarn workspace golfbuddy type-check
