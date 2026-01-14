@@ -1,0 +1,5 @@
+{
+  "installCommand": "corepack enable && yarn install",
+  "buildCommand": "yarn workspace @golfbuddy/shared build && yarn workspace @golfbuddy/firebase build && yarn workspace golfbuddy build"
+}
+
