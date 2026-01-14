@@ -1,13 +1,13 @@
 /**
  * Stripe server-side utilities
  * Used in Route Handlers for checkout sessions and webhooks
- * 
+ *
  * Environment variables required:
  * - STRIPE_SECRET_KEY
  * - STRIPE_WEBHOOK_SECRET
  * - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY (client-side)
  * - NEXT_PUBLIC_APP_URL (for success/cancel URLs)
- * 
+ *
  * IMPORTANT: This module should be marked as server-only
  */
 
@@ -42,7 +42,7 @@ export async function createCheckoutSession(options: {
   //   metadata: { orderId: options.orderId },
   // });
   // return session;
-  
+
   console.log("createCheckoutSession placeholder", options);
   return null;
 }
@@ -60,7 +60,7 @@ export function verifyWebhookSignature(
   //   _signature,
   //   process.env.STRIPE_WEBHOOK_SECRET!
   // );
-  
+
   console.log("verifyWebhookSignature placeholder");
   return null;
 }

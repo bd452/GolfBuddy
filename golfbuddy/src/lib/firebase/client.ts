@@ -1,7 +1,7 @@
 /**
  * Firebase Client SDK initialization
  * Used in client-side code for Auth, Firestore, and Storage
- * 
+ *
  * Environment variables required:
  * - NEXT_PUBLIC_FIREBASE_API_KEY
  * - NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN

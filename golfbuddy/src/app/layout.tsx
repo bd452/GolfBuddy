@@ -14,7 +14,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "GolfBuddy - Online Golf Coaching",
-  description: "Premium-quality, practical golf coaching delivered remotely, with clear drills and actionable next steps.",
+  description:
+    "Premium-quality, practical golf coaching delivered remotely, with clear drills and actionable next steps.",
 };
 
 export default function RootLayout({

@@ -7,7 +7,7 @@ export default function AdminOrdersPage() {
   return (
     <div>
       <h1 className="text-2xl font-bold mb-6">All Orders</h1>
-      
+
       {/* Search and Filter */}
       <div className="flex gap-4 mb-6">
         <input
@@ -23,7 +23,7 @@ export default function AdminOrdersPage() {
           <option value="refunded">Refunded</option>
         </select>
       </div>
-      
+
       {/* Orders Table */}
       <div className="bg-white dark:bg-zinc-900 rounded-lg shadow overflow-hidden">
         <table className="min-w-full divide-y divide-zinc-200 dark:divide-zinc-800">

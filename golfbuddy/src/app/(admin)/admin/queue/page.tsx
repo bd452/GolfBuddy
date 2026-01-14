@@ -7,7 +7,7 @@ export default function AdminQueuePage() {
   return (
     <div>
       <h1 className="text-2xl font-bold mb-6">Review Queue</h1>
-      
+
       {/* Status Filters */}
       <div className="flex gap-2 mb-6">
         <button className="px-4 py-2 bg-green-600 text-white rounded-md text-sm font-medium">
@@ -20,14 +20,14 @@ export default function AdminQueuePage() {
           Delivered
         </button>
       </div>
-      
+
       {/* Empty State */}
       <div className="bg-white dark:bg-zinc-900 rounded-lg shadow p-8 text-center">
         <p className="text-zinc-600 dark:text-zinc-400">
           No orders in this queue.
         </p>
       </div>
-      
+
       {/* Order List (placeholder) */}
       {/*
       <div className="space-y-4">

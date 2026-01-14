@@ -1,10 +1,10 @@
 /**
  * Email sending utilities using Resend
- * 
+ *
  * Environment variables required:
  * - RESEND_API_KEY
  * - EMAIL_FROM
- * 
+ *
  * IMPORTANT: This module should be marked as server-only
  */
 
@@ -34,7 +34,7 @@ export async function sendEmail(options: EmailOptions): Promise<void> {
   //   html: options.html,
   //   text: options.text,
   // });
-  
+
   console.log("sendEmail placeholder", options);
 }
 

@@ -13,11 +13,11 @@ export async function POST(
 ) {
   try {
     const { orderId } = await params;
-    
+
     // TODO: Implement when Firebase is configured
     // const user = await requireCoach();
     // const { responseId } = await request.json();
-    // 
+    //
     // 1. Verify response video exists
     // 2. Update order status to "delivered"
     // 3. Set deliveredAt timestamp
@@ -25,12 +25,12 @@ export async function POST(
     // 5. Log admin action for auditing
 
     const body = await request.json();
-    console.log("POST /api/admin/orders/[orderId]/deliver placeholder", { orderId, body });
+    console.log("POST /api/admin/orders/[orderId]/deliver placeholder", {
+      orderId,
+      body,
+    });
 
-    return NextResponse.json(
-      { error: "Not implemented yet" },
-      { status: 501 }
-    );
+    return NextResponse.json({ error: "Not implemented yet" }, { status: 501 });
   } catch (error) {
     console.error("Error delivering order:", error);
     return NextResponse.json(
