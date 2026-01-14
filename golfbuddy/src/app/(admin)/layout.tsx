@@ -4,6 +4,9 @@
  */
 import Link from "next/link";
 
+// Admin pages require auth, so they must be dynamically rendered
+export const dynamic = "force-dynamic";
+
 export default function AdminLayout({
   children,
 }: {

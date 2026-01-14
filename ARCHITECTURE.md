@@ -446,6 +446,7 @@ Prefer Google application default creds in Vercel, or store a service account JS
 
 - Deploy Next.js directly on Vercel.
 - Configure all env vars in Vercel project settings.
+- Set `ENABLE_EXPERIMENTAL_COREPACK=1` environment variable to enable Yarn 4 (required for workspace dependencies).
 - Add Stripe webhook endpoint pointing to:
   - `https://<your-domain>/api/stripe/webhook`
 
