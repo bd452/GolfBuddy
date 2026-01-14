@@ -2,16 +2,28 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+This project uses **Yarn 4** with **PnP (Plug'n'Play)** and **Corepack** for package management.
+
+### Prerequisites
+
+- Node.js 18+ (with Corepack enabled)
+- Corepack is enabled by default in Node.js 18+, or run `corepack enable`
+
+### Installation
 
 ```bash
-npm run dev
-# or
+# Install dependencies (Yarn will be automatically used via Corepack)
+yarn install
+```
+
+**Note**: This project uses Yarn PnP (Plug'n'Play), which means there is no `node_modules` directory. Dependencies are resolved directly from the `.pnp.cjs` file. This provides faster installs and better dependency resolution. Next.js has built-in support for Yarn PnP, so no additional configuration is needed.
+
+### Development
+
+Run the development server:
+
+```bash
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.

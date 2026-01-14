@@ -40,7 +40,10 @@ export default function SignInPage() {
       </form>
       <p className="text-center text-sm text-zinc-600 dark:text-zinc-400 mt-4">
         Don&apos;t have an account?{" "}
-        <a href="/sign-up" className="text-green-600 hover:text-green-700 font-medium">
+        <a
+          href="/sign-up"
+          className="text-green-600 hover:text-green-700 font-medium"
+        >
           Sign Up
         </a>
       </p>

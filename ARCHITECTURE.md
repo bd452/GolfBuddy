@@ -13,6 +13,7 @@ This document describes the recommended technical architecture to implement the 
 
 ## High-level stack (opinions / defaults)
 
+- **Package Management**: Yarn 4 (Berry) with PnP (Plug'n'Play) via Corepack
 - **Web**: Next.js (App Router) + TypeScript
 - **Mobile (iOS/Android)**: React Native via Expo + TypeScript
 - **Backend**: Next.js Route Handlers / Server Actions (Node.js runtime) + Firebase Admin SDK

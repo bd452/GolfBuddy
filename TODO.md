@@ -15,10 +15,11 @@
     - [ ] (Optional) Create `packages/shared/` for shared types/schemas (Zod)
     - [ ] (Optional) Create `apps/mobile/` Expo app skeleton
   - [ ] **Baseline DX / quality**
-    - [ ] Configure TypeScript strictness and path aliases
-    - [ ] Add formatting and linting (ESLint/Prettier) and basic CI checks
-    - [ ] Add environment variable documentation and `.env.local.example`
-    - [ ] Add “server-only” boundaries for Firebase Admin + Stripe secrets
+    - [x] Configure package management: Yarn 4 with PnP and Corepack
+    - [x] Configure TypeScript strictness and path aliases
+    - [x] Add formatting and linting (ESLint/Prettier) and basic CI checks
+    - [x] Add environment variable documentation and `.env.local.example`
+    - [x] Add "server-only" boundaries for Firebase Admin + Stripe secrets
 
 - [ ] **Firebase project setup (system of record)**
   - [ ] **Create Firebase project and enable core services**

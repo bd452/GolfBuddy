@@ -13,23 +13,23 @@ export async function POST(
 ) {
   try {
     const { orderId } = await params;
-    
+
     // TODO: Implement when Firebase is configured
     // const user = await requireCoach();
     // const { newStatus } = await request.json();
-    // 
+    //
     // 1. Fetch order from Firestore
     // 2. Validate transition is allowed
     // 3. Update order status
     // 4. Log admin action for auditing
-    
-    const body = await request.json();
-    console.log("POST /api/admin/orders/[orderId]/status placeholder", { orderId, body });
 
-    return NextResponse.json(
-      { error: "Not implemented yet" },
-      { status: 501 }
-    );
+    const body = await request.json();
+    console.log("POST /api/admin/orders/[orderId]/status placeholder", {
+      orderId,
+      body,
+    });
+
+    return NextResponse.json({ error: "Not implemented yet" }, { status: 501 });
   } catch (error) {
     console.error("Error updating order status:", error);
     return NextResponse.json(

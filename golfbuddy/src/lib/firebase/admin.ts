@@ -1,12 +1,12 @@
 /**
  * Firebase Admin SDK initialization
  * Used in server-side code (Route Handlers, Server Actions)
- * 
+ *
  * Environment variables required:
  * - FIREBASE_ADMIN_PROJECT_ID
  * - FIREBASE_ADMIN_CLIENT_EMAIL
  * - FIREBASE_ADMIN_PRIVATE_KEY (handle newlines: replace \\n with \n)
- * 
+ *
  * IMPORTANT: This module should be marked as server-only
  */
 
@@ -26,10 +26,10 @@ const adminConfig = {
 };
 
 // Placeholder - uncomment when firebase-admin is installed
-// const app = getApps().length > 0 
-//   ? getApps()[0] 
+// const app = getApps().length > 0
+//   ? getApps()[0]
 //   : initializeApp({ credential: cert(adminConfig) });
-// 
+//
 // export const adminAuth = getAuth(app);
 // export const adminDb = getFirestore(app);
 // export const adminStorage = getStorage(app);

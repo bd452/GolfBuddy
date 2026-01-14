@@ -1,7 +1,7 @@
 /**
  * Auth middleware - require admin/coach role
  * Used in admin Route Handlers and Server Actions
- * 
+ *
  * IMPORTANT: This module should be marked as server-only
  */
 
@@ -14,11 +14,11 @@ import { requireUser, type AuthenticatedUser } from "./requireUser";
  */
 export async function requireCoach(): Promise<AuthenticatedUser> {
   const user = await requireUser();
-  
+
   if (user.role !== "coach" && user.role !== "admin") {
     throw new Error("Coach access required");
   }
-  
+
   return user;
 }
 
@@ -28,11 +28,11 @@ export async function requireCoach(): Promise<AuthenticatedUser> {
  */
 export async function requireAdmin(): Promise<AuthenticatedUser> {
   const user = await requireUser();
-  
+
   if (user.role !== "admin") {
     throw new Error("Admin access required");
   }
-  
+
   return user;
 }
 

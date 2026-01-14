@@ -16,7 +16,10 @@ export default async function AdminOrderDetailPage({
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <Link href="/admin/orders" className="text-sm text-zinc-500 hover:text-zinc-700">
+          <Link
+            href="/admin/orders"
+            className="text-sm text-zinc-500 hover:text-zinc-700"
+          >
             ← Back to Orders
           </Link>
           <h1 className="text-2xl font-bold mt-2">Order #{orderId}</h1>
@@ -33,8 +36,12 @@ export default async function AdminOrderDetailPage({
           <div className="bg-white dark:bg-zinc-900 rounded-lg shadow p-6">
             <h2 className="font-semibold mb-4">Client Information</h2>
             <div className="space-y-2 text-sm">
-              <p><span className="text-zinc-500">Name:</span> Client Name</p>
-              <p><span className="text-zinc-500">Email:</span> client@example.com</p>
+              <p>
+                <span className="text-zinc-500">Name:</span> Client Name
+              </p>
+              <p>
+                <span className="text-zinc-500">Email:</span> client@example.com
+              </p>
             </div>
           </div>
 
@@ -42,9 +49,15 @@ export default async function AdminOrderDetailPage({
           <div className="bg-white dark:bg-zinc-900 rounded-lg shadow p-6">
             <h2 className="font-semibold mb-4">Intake Summary</h2>
             <div className="space-y-2 text-sm">
-              <p><span className="text-zinc-500">Category:</span> Swing</p>
-              <p><span className="text-zinc-500">Sub-category:</span> Off the Tee</p>
-              <p><span className="text-zinc-500">Goals:</span> Distance, Accuracy</p>
+              <p>
+                <span className="text-zinc-500">Category:</span> Swing
+              </p>
+              <p>
+                <span className="text-zinc-500">Sub-category:</span> Off the Tee
+              </p>
+              <p>
+                <span className="text-zinc-500">Goals:</span> Distance, Accuracy
+              </p>
               <div className="mt-4">
                 <span className="text-zinc-500">Description:</span>
                 <p className="mt-1 text-zinc-700 dark:text-zinc-300">

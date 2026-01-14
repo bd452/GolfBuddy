@@ -1,0 +1,11 @@
+{
+  "search.exclude": {
+    "**/golfbuddy/.yarn": true,
+    "**/golfbuddy/.pnp.*": true
+  },
+  "eslint.nodePath": "golfbuddy/.yarn/sdks",
+  "prettier.prettierPath": "golfbuddy/.yarn/sdks/prettier/index.cjs",
+  "typescript.tsdk": "golfbuddy/.yarn/sdks/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true
+}
+

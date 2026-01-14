@@ -54,7 +54,7 @@ export async function validateUploadRequest(options: {
   // 3. Verify order.status allows uploads
   // 4. Verify uploadKey is in order.requiredUploads
   // 5. Return storage path if allowed
-  
+
   console.log("validateUploadRequest placeholder", options);
   return { allowed: false, reason: "Not implemented yet" };
 }

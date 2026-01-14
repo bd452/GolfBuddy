@@ -24,7 +24,11 @@ export type OrderType = "async_analysis" | "live_lesson";
 /**
  * Coaching categories
  */
-export type CoachingCategory = "swing" | "short_game" | "putting" | "course_management";
+export type CoachingCategory =
+  | "swing"
+  | "short_game"
+  | "putting"
+  | "course_management";
 
 /**
  * Swing sub-categories
@@ -69,13 +73,13 @@ export interface Order {
   description: string;
   status: OrderStatus;
   requiredUploads: RequiredUpload[];
-  
+
   // Stripe fields
   stripeCheckoutSessionId?: string;
   stripePaymentIntentId?: string;
   amountCents?: number;
   currency?: string;
-  
+
   // Timestamps
   createdAt: Date;
   updatedAt: Date;
